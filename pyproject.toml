@@ -1,0 +1,43 @@
+[project]
+name = "ene"
+version = "1.0.0"
+description = "A container for the embedding vectors of a video title: format specification 1.0 and reference implementation"
+readme = "README.md"
+license = "Apache-2.0"
+license-files = ["LICENSE", "NOTICE"]
+keywords = ["embeddings", "video", "semantic-search", "file-format", "multimodal"]
+authors = [{ name = "Ene Alexandru", email = "69957152+EneAlexandru@users.noreply.github.com" }]
+requires-python = ">=3.12"
+dependencies = [
+    "brotli>=1.2.0",
+    "fastapi>=0.159.1",
+    "lz4>=4.4.5",
+    "numpy>=2.5.4",
+    "python-multipart>=0.0.32",
+    "sentence-transformers>=6.2.0",
+    "torch>=2.14.1",
+    "torchaudio>=2.11.0",
+    "torchvision>=0.29.1",
+    "uvicorn>=0.54.0",
+    "zstandard>=0.25.0",
+]
+
+[project.urls]
+Repository = "https://github.com/EneAlexandru/.ene"
+Specification = "https://github.com/EneAlexandru/.ene/blob/main/SPEC-ene.md"
+
+[tool.uv.sources]
+torch = { index = "pytorch-cuda" }
+torchvision = { index = "pytorch-cuda" }
+torchaudio = { index = "pytorch-cuda" }
+
+[[tool.uv.index]]
+name = "pytorch-cuda"
+url = "https://download.pytorch.org/whl/cu130"
+explicit = true
+
+[dependency-groups]
+dev = [
+    "httpx>=0.28.1",
+    "pytest>=9.1.1",
+]

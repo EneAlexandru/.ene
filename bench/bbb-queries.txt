@@ -1,0 +1,15 @@
+# text queries for the benchmark (SearchQuery), RO + EN; `RO || EN` = the same query in two languages
+un iepure mare se trezește și iese din vizuină || a big rabbit wakes up in the morning
+fluturi zburând pe o pajiște însorită || butterflies on a meadow
+trei rozătoare aruncă cu nuci și ghinde în iepure || rodents throwing nuts at the rabbit
+veverița zburătoare planează prin aer || a flying squirrel glides through the air
+iepurele construiește o capcană || the rabbit builds a trap
+răsărit de soare peste pajiște || sunrise over the meadow
+generic de final cu muzică || end credits
+muzică orchestrală veselă || cheerful orchestral music
+râs batjocoritor || mocking laughter
+sunet de pădure cu păsări || forest ambience with birds
+iepurele își face un plan de răzbunare
+o pasăre mică este lovită cu o ghindă
+mere căzând din copac
+animație 3D cu animale de pădure

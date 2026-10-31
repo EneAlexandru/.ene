@@ -1,0 +1,10 @@
+# Python environment, rebuilt with `uv sync` from uv.lock
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+
+# only Big Buck Bunny (CC BY 3.0) is published as data; its source video is fetched by samples/Big Buck Bunny/fetch_video.py
+private-titles/
+*.mkv
+*.mp4

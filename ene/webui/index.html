@@ -1,0 +1,130 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>.ene</title>
+<link rel="stylesheet" href="/static/app.css">
+</head>
+<body>
+<header class="top">
+  <div class="brand">.ene <small>ENhanced Embedded</small></div>
+  <nav class="nav">
+    <a href="#/library" data-view="library">Library</a>
+    <a href="#/title" data-view="title" id="nav-title" style="display:none">Title</a>
+    <a href="#/build" data-view="build">Build</a>
+  </nav>
+  <div class="spacer"></div>
+  <span class="pill" id="model-pill"><span class="dot"></span><span>model</span></span>
+  <span class="pill" id="lib-pill"><span>—</span></span>
+  <button class="icon-btn" id="theme-btn" title="theme: auto / light / dark">◐</button>
+</header>
+
+<main>
+  <!-- ------------------------------------------------ library -->
+  <section class="view" id="view-library">
+    <div class="card">
+      <div class="row" style="justify-content:space-between">
+        <h3>Semantic search across all titles</h3>
+        <span class="small muted" id="space-note">text, image or audio → one vector space</span>
+      </div>
+      <div id="qbox-library" style="margin-top:10px"></div>
+      <div id="library-results"></div>
+    </div>
+    <h2>Titles</h2>
+    <div class="card" style="padding:0 0 4px">
+      <table id="library-table">
+        <thead><tr><th>Title</th><th>Year</th><th class="r">Duration</th><th>Video</th><th class="r">Packets</th><th class="r">Versions</th><th class="r">Sections</th><th class="r">Rows</th><th class="r">.ene</th><th class="r">B/min</th><th>Created</th><th>File</th></tr></thead>
+        <tbody></tbody>
+      </table>
+      <div class="empty" id="library-empty" style="display:none">No .ene file under the scanned roots. Build one from the "Build" tab.</div>
+    </div>
+    <p class="small muted" id="roots-line"></p>
+  </section>
+
+  <!-- ------------------------------------------------ title -->
+  <section class="view" id="view-title">
+    <div class="row" style="justify-content:space-between; margin-bottom:10px">
+      <div>
+        <h1 id="t-title" style="font-size:22px"></h1>
+        <div class="small muted mono" id="t-sub"></div>
+      </div>
+      <div class="row" id="t-stats"></div>
+    </div>
+    <div class="chips" id="t-tags" style="margin-bottom:12px"></div>
+
+    <div class="grid2">
+      <div class="card" style="padding:8px">
+        <div id="player"></div>
+        <div class="small muted" style="margin-top:6px" id="player-line"></div>
+      </div>
+      <div class="card">
+        <h3>Search in this title</h3>
+        <div id="qbox-title" style="margin-top:10px"></div>
+        <div id="t-qsummary" class="small" style="margin-top:10px"></div>
+      </div>
+    </div>
+
+    <h2>Timeline by section</h2>
+    <div class="card">
+      <div class="tl-wrap">
+        <canvas class="tl" id="tl"></canvas>
+        <div class="tip" id="tl-tip"></div>
+      </div>
+      <div class="legend"><span>relative score within the section: min</span><span class="ramp"></span><span>max</span><span style="margin-left:14px">▭ outline = top-k</span><span class="needle" style="margin-left:14px"></span><span>player position</span><span class="spacer"></span><span>click a cell = seek the video</span></div>
+    </div>
+
+    <div id="t-results" class="results"></div>
+
+    <h2>Sections</h2>
+    <div class="card" style="padding:0 0 4px">
+      <table id="t-sections"><thead><tr><th>Section</th><th>Part</th><th>Role</th><th>Modality</th><th>Lang</th><th>Space</th><th>Version</th><th class="r">Rows</th><th class="r">dim</th><th>quant</th><th>codec</th><th class="r">bytes</th><th class="r">B/row</th><th class="r">rev</th><th>ref</th><th>fingerprint</th><th>text</th></tr></thead><tbody></tbody></table>
+    </div>
+
+    <h2>Packets</h2>
+    <div class="card" style="padding:0 0 4px">
+      <table id="t-packets"><thead><tr><th>#</th><th class="r">Offset</th><th class="r">Length</th><th class="r">Versions</th><th class="r">Sections</th><th>sha256</th><th>One block</th><th>Description</th></tr></thead><tbody></tbody></table>
+    </div>
+
+    <div class="card" style="margin-top:16px" id="t-bench-card">
+      <details><summary>Size / information benchmark</summary><div class="md-wrap md" id="t-bench"></div></details>
+    </div>
+    <div class="card" style="margin-top:16px">
+      <details><summary>Description (JSON, resolved after overlays)</summary><pre class="json" id="t-description"></pre></details>
+    </div>
+  </section>
+
+  <!-- ------------------------------------------------ build -->
+  <section class="view" id="view-build">
+    <div class="grid2">
+      <div class="card">
+        <h3>Build a .ene</h3>
+        <p class="small muted">Runs profile <code>ene-1</code> (SPEC §6.1) on the GPU: ~80 s for 10 min of 1080p video. Writes <code>.ene</code> and <code>.master.npz</code> next to the source file.</p>
+        <form class="build" id="build-form" onsubmit="return false">
+          <label class="wide">Media file (path on the server)<input name="file" required placeholder="/media/movie.mkv"></label>
+          <label>Title<input name="title" required></label>
+          <label>Year<input name="year" type="number" min="1880" max="2100"></label>
+          <label>IMDb<input name="imdb" placeholder="tt1254207"></label>
+          <label>Policy<select name="policy"><option value="compact">compact — fp16 + zstd below 32 rows, int8 + ene-xdelta above (default)</option><option value="fast">fast — raw shared block, nothing to decode (fastest load)</option><option value="lossless">lossless — fp32 + zstd everywhere</option></select></label>
+          <label class="wide">Synopsis<textarea name="synopsis"></textarea></label>
+          <label class="wide">Tags (comma-separated)<input name="tags" placeholder="animation, comedy, rabbit"></label>
+          <label class="wide"><span>Subtitles (one line per language: <code>lang=path.srt</code>)</span><textarea name="srt" style="min-height:44px" placeholder="eng=/media/movie.en.srt"></textarea></label>
+          <label>Output (optional)<input name="out" placeholder="default: next to the source"></label>
+          <label style="flex-direction:row; align-items:center; gap:8px; margin-top:18px"><input type="checkbox" name="no_sha256" style="width:auto"> skip sha256 of the source (faster)</label>
+          <div class="wide row"><button class="btn" id="build-btn">Start build</button><span class="small muted" id="build-msg"></span></div>
+        </form>
+      </div>
+      <div class="card">
+        <h3>Media files under the roots</h3>
+        <p class="small muted">Click a row to fill in the form.</p>
+        <div class="scroll-x"><table id="media-table"><thead><tr><th>File · directory</th><th class="r">Size</th><th>.ene</th></tr></thead><tbody></tbody></table></div>
+      </div>
+    </div>
+    <h2>Builds</h2>
+    <div id="jobs"></div>
+  </section>
+</main>
+<div class="toast" id="toast"></div>
+<script src="/static/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,28 @@
+[
+ {
+  "slug": "bbb",
+  "file": "samples/Big Buck Bunny/bbb_sunflower_1080p_30fps_normal.mp4",
+  "out": "samples/Big Buck Bunny/Big Buck Bunny",
+  "title": "Big Buck Bunny",
+  "year": 2008,
+  "imdb": "tt1254207",
+  "synopsis_file": "samples/Big Buck Bunny/synopsis.txt",
+  "tags": [
+   "animation",
+   "short film",
+   "Blender",
+   "rabbit",
+   "flying squirrel",
+   "rodents",
+   "butterflies",
+   "meadow",
+   "trap",
+   "revenge",
+   "comedy",
+   "cartoon",
+   "forest",
+   "open movie"
+  ],
+  "queries": "bench/bbb-queries.txt"
+ }
+]
